@@ -15,6 +15,7 @@
     <tr th:each="recipe : ${recipes}">
         <td th:text="${recipe.id}">123</td>
         <td th:text="${recipe.description}">Tasty Goodnees</td>
+        <td th:text="${recipe.notes.recipeNotes}"></td>
     </tr>
 </table>
 </body>
