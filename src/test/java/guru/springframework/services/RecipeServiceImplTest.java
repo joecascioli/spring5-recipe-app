@@ -1,6 +1,5 @@
 package guru.springframework.services;
 
-import guru.springframework.converters.RecipeConverter;
 import guru.springframework.converters.RecipeConverter.RecipeCommandToRecipe;
 import guru.springframework.converters.RecipeConverter.RecipeToRecipeCommand;
 import guru.springframework.model.Recipe;
@@ -30,7 +29,7 @@ public class RecipeServiceImplTest {
     @Mock
     RecipeToRecipeCommand recipeToRecipeCommand;
 
-    final Long id = 1L;
+    final Long idLong = 1L;
 
     @Before
     public void setUp() throws Exception {
@@ -41,11 +40,11 @@ public class RecipeServiceImplTest {
     @Test
     public void getRecipesById() {
         Recipe recipe = new Recipe();
-        recipe.setId(id);
+        recipe.setId(idLong);
 
         when(recipeRepository.findById(anyLong())).thenReturn(Optional.of(recipe));
 
-        Recipe returned = recipeService.findById(id);
+        Recipe returned = recipeService.findById(idLong);
 
         assertNotNull("Null recipe returned", returned);
         verify(recipeRepository).findById(anyLong());
@@ -63,5 +62,13 @@ public class RecipeServiceImplTest {
 
         assertEquals(recipes.size(), 1);
         verify(recipeRepository, times(1)).findAll();
+    }
+
+    @Test
+    public void testDeleteById()
+    {
+        recipeService.deleteById(idLong);
+
+        verify(recipeRepository, times(1)).deleteById(anyLong());
     }
 }
