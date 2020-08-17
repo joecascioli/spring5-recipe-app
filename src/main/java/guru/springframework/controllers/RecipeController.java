@@ -1,6 +1,5 @@
 package guru.springframework.controllers;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.services.RecipeService;
 import org.springframework.stereotype.Controller;
@@ -8,8 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import sun.misc.Contended;
 
 @Controller
 public class RecipeController {
@@ -20,7 +17,7 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-    @RequestMapping("/recipe/show/{id}")
+    @RequestMapping("/recipe/{id}/show")
     public String showById(@PathVariable String id, Model model){
         model.addAttribute("recipe", recipeService.findById(new Long(id)));
 
@@ -34,10 +31,17 @@ public class RecipeController {
         return "recipe/recipeform";
     }
 
-    @RequestMapping(name = "recipe", method = RequestMethod.POST)
+    @RequestMapping("/recipe/{id}/update")
+    public String updateRecipe(@PathVariable String id, Model model){
+        model.addAttribute("recipe",  recipeService.findCommandById(new Long(id)));
+
+        return "recipe/recipeform";
+    }
+
+    @RequestMapping("recipe")
     public String saveOrUpdate(@ModelAttribute RecipeCommand command){
         RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
 
-        return "redirect:/recipe/show/" +savedCommand.getId();
+        return "redirect:/recipe/" +savedCommand.getId() +"/show";
     }
 }
