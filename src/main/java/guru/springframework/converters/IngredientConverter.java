@@ -52,6 +52,8 @@ public class IngredientConverter {
 
             final IngredientCommand ret = new IngredientCommand();
             ret.setId(source.getId());
+            if(source.getRecipe() != null)
+                ret.setRecipeId(source.getRecipe().getId());
             ret.setAmount(source.getAmount());
             ret.setDescription(source.getDescription());
             ret.setUom(unitOfMeasureConverter.convert(source.getUom()));
